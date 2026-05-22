@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ActivityLogController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +32,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('products', ProductController::class);
     Route::resource('appointments', AppointmentController::class);
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index']) ->name('dashboard');
     
+    Route::get( 'activity-logs', [ActivityLogController::class, 'index'] )->name('activity-logs.index');
 });
 
 require __DIR__.'/auth.php';
