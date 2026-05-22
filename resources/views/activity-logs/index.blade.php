@@ -21,7 +21,7 @@
 
     <!-- TABLE -->
 
-    <div class="overflow-x-auto bg-white shadow rounded-lg">
+    <div class="bg-white shadow rounded-lg">
 
         <table id="activity-log-table"
                class="min-w-full border border-gray-200">

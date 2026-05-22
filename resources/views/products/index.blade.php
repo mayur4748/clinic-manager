@@ -34,7 +34,7 @@
         </div>
     </div>
     <!-- TABLE -->
-    <div class="overflow-x-auto bg-white  rounded-lg">
+    <div class="bg-white  rounded-lg">
         <table id="products-table" class="min-w-full border border-gray-200">
             <thead class="bg-gray-100">
                 <tr>

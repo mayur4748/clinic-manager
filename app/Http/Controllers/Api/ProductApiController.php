@@ -9,72 +9,131 @@ use Illuminate\Http\Request;
 class ProductApiController extends Controller
 {
     /**
-     * Product listing
+     * GET /api/products
+     * List logged-in user's products
      */
     public function index()
     {
-        return response()->json(
+        $products = Product::where(
+            'user_id',
+            auth()->id()
+        )->get();
 
-            Product::all()
-
-        );
+        return response()->json([
+            'status' => true,
+            'message' => 'Product list fetched successfully',
+            'data' => $products
+        ], 200);
     }
 
     /**
-     * Store product
+     * POST /api/products
+     * Create product
      */
     public function store(Request $request)
     {
-        $product = Product::create([
-
-            'user_id' => auth()->id(),
-
-            'category' => $request->category,
-
-            'subcategory' => $request->subcategory,
-
-            'product_name' => $request->product_name,
-
-            'price' => $request->price,
-
-            'quantity' => $request->quantity,
-
-            'status' => $request->status,
-
+        $request->validate([
+            'category' => 'required',
+            'subcategory' => 'required',
+            'product_name' => 'required|min:3',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'status' => 'required'
         ]);
 
-        return response()->json($product);
-    }
-
-    /**
-     * Show single product
-     */
-    public function show(Product $product)
-    {
-        return response()->json($product);
-    }
-
-    /**
-     * Update product
-     */
-    public function update(Request $request, Product $product)
-    {
-        $product->update($request->all());
-
-        return response()->json($product);
-    }
-
-    /**
-     * Delete product
-     */
-    public function destroy(Product $product)
-    {
-        $product->delete();
+        $product = Product::create([
+            'user_id' => auth()->id(),
+            'category' => $request->category,
+            'subcategory' => $request->subcategory,
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'status' => $request->status,
+        ]);
 
         return response()->json([
+            'status' => true,
+            'message' => 'Product created successfully',
+            'data' => $product
+        ], 201);
+    }
 
-            'message' => 'Product deleted'
+    /**
+     * GET /api/products/{id}
+     * View single product
+     */
+    public function show($id)
+    {
+        $product = Product::where('user_id', auth()->id())
+                    ->find($id);
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => true,
+            'data' => $product
+        ], 200);
+    }
 
+    /**
+     * PUT /api/products/{id}
+     * Update product
+     */
+    public function update(Request $request, $id)
+    {
+        $product = Product::where('user_id', auth()->id())
+                    ->find($id);
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+        $request->validate([
+            'category' => 'required',
+            'subcategory' => 'required',
+            'product_name' => 'required|min:3',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'status' => 'required'
         ]);
+        $product->update([
+            'category' => $request->category,
+            'subcategory' => $request->subcategory,
+            'product_name' => $request->product_name,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product updated successfully',
+            'data' => $product
+        ], 200);
+    }
+
+    /**
+     * DELETE /api/products/{id}
+     * Delete product
+     */
+    public function destroy($id)
+    {
+        $product = Product::where('user_id', auth()->id())
+                    ->find($id);
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+        $product->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully'
+        ], 200);
     }
 }
