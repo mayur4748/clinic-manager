@@ -20,7 +20,7 @@
             </div>
         @endif
         <!-- FORM -->
-        <form action="{{ route('products.update', $product->id) }}" method="POST">
+        <form id="productEditForm" action="{{ route('products.update', $product->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -85,6 +85,73 @@
 </div>
 </x-app-layout>
 <!-- SUBCATEGORY SCRIPT -->
+
+<script>
+
+$(document).ready(function () {
+    $('#productEditForm').validate({
+        rules: {
+            category: {
+                required: true
+            },
+            subcategory: {
+                required: true
+            },
+            product_name: {
+                required: true,
+                minlength: 3
+            },
+            price: {
+                required: true,
+                number: true,
+                min: 1
+            },
+            quantity: {
+                required: true,
+                digits: true,
+                min: 1
+            },
+            status: {
+                required: true
+            }
+        },
+        messages: {
+            category: {
+                required: "Please select category"
+            },
+            subcategory: {
+                required: "Please select subcategory"
+            },
+            product_name: {
+                required: "Product name is required",
+                minlength: "Minimum 3 characters"
+            },
+            price: {
+                required: "Price is required",
+                number: "Only numeric value allowed",
+                min: "Minimum price is 1"
+            },
+            quantity: {
+                required: "Quantity is required",
+                digits: "Only whole numbers allowed",
+                min: "Minimum quantity is 1"
+            },
+            status: {
+                required: "Please select status"
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'text-red-500 text-sm',
+        highlight: function(element) {
+            $(element).addClass('border-red-500');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('border-red-500');
+        }
+    });
+});
+</script>
+
 <script>
     const subcategories = {
         Medicine: [

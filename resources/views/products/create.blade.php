@@ -18,13 +18,13 @@
             </div>
         @endif
         <!-- FORM -->
-        <form action="{{ route('products.store') }}" method="POST">
+        <form id="productForm" action="{{ route('products.store') }}" method="POST">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <!-- CATEGORY -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Category
+                        Category *
                     </label>
                     <select name="category" id="category" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
                         <option value=""> Select Category </option>
@@ -35,7 +35,7 @@
                 <!-- SUBCATEGORY -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Subcategory
+                        Subcategory *
                     </label>
                     <select name="subcategory" id="subcategory" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
                         <option value=""> Select Subcategory </option>
@@ -44,21 +44,21 @@
                 <!-- PRODUCT NAME -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Product Name
+                        Product Name *
                     </label>
                     <input type="text" name="product_name" value="{{ old('product_name') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Enter Product Name">
                 </div>
                 <!-- PRICE -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Price
+                        Price *
                     </label>
                     <input type="number" step="0.01" name="price" value="{{ old('price') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Enter Price">
                 </div>
                 <!-- QUANTITY -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Quantity
+                        Quantity *
                     </label>
                     <input type="number" name="quantity" value="{{ old('quantity') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Enter Quantity">
                 </div>
@@ -84,6 +84,69 @@
 </div>
 </x-app-layout>
 <!-- SUBCATEGORY SCRIPT -->
+
+<script>
+
+$(document).ready(function () {
+
+    $('#productForm').validate({
+        rules: {
+            category: {
+                required: true
+            },
+            subcategory: {
+                required: true
+            },
+            product_name: {
+                required: true,
+                minlength: 3
+            },
+            price: {
+                required: true,
+                number: true,
+                min: 1
+            },
+            quantity: {
+                required: true,
+                digits: true,
+                min: 1
+            },
+            status: {
+                required: true
+            }
+        },
+        messages: {
+            category: {
+                required: "Please select category"
+            },
+            subcategory: {
+                required: "Please select subcategory"
+            },
+            product_name: {
+                required: "Product name is required",
+                minlength: "Minimum 3 characters"
+            },
+            price: {
+                required: "Price is required",
+                number: "Only numeric value allowed",
+                min: "Minimum price is 1"
+            },
+            quantity: {
+                required: "Quantity is required",
+                digits: "Only whole numbers allowed",
+                min: "Minimum quantity is 1"
+            },
+            status: {
+                required: "Please select status"
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'text-red-500 text-sm',
+    });
+});
+
+</script>
+
 <script>
     const subcategories = {
         Medicine: [

@@ -22,28 +22,27 @@
             </div>
         @endif
         <!-- FORM -->
-        <form action="{{ route('appointments.store') }}"
-              method="POST">
+        <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <!-- PATIENT NAME -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Patient Name
+                        Patient Name *
                     </label>
                     <input type="text" name="patient_name" value="{{ old('patient_name') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Enter Patient Name">
                 </div>
                 <!-- CLINIC LOCATION -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Clinic Location
+                        Clinic Location *
                     </label>
                     <input type="text" name="clinic_location" value="{{ old('clinic_location') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Enter Clinic Location">
                 </div>
                 <!-- CLINICIAN -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Clinician
+                        Clinician *
                     </label>
                     <select name="clinician_id" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
                         <option value=""> Select Clinician </option>
@@ -58,7 +57,7 @@
                 <!-- APPOINTMENT DATE -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">
-                        Appointment Date
+                        Appointment Date *
                     </label>
                     <input type="datetime-local" name="appointment_date" value="{{ old('appointment_date') }}" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
                 </div>
@@ -93,3 +92,49 @@
     </div>
 </div>
 </x-app-layout>
+
+<script>
+
+$(document).ready(function () {
+    $('#appointmentForm').validate({
+        rules: {
+            patient_name: {
+                required: true,
+                minlength: 3
+            },
+            clinic_location: {
+                required: true
+            },
+            clinician_id: {
+                required: true
+            },
+            appointment_date: {
+                required: true
+            },
+            status: {
+                required: true
+            }
+        },
+        messages: {
+            patient_name: {
+                required: "Patient name is required",
+                minlength: "Minimum 3 characters"
+            },
+            clinic_location: {
+                required: "Clinic location is required"
+            },
+            clinician_id: {
+                required: "Please select clinician"
+            },
+            appointment_date: {
+                required: "Appointment date is required"
+            },
+            status: {
+                required: "Please select status"
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'text-red-500 text-sm',
+    });
+});
+</script>

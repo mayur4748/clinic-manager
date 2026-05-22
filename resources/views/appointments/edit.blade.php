@@ -22,8 +22,7 @@
             </div>
         @endif
         <!-- FORM -->
-        <form action="{{ route('appointments.update', $appointment->id) }}"
-              method="POST">
+        <form id="appointmentEditForm" action="{{ route('appointments.update', $appointment->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -96,3 +95,55 @@
     </div>
 </div>
 </x-app-layout>
+
+<script>
+
+$(document).ready(function () {
+    $('#appointmentEditForm').validate({
+        rules: {
+            patient_name: {
+                required: true,
+                minlength: 3
+            },
+            clinic_location: {
+                required: true
+            },
+            clinician_id: {
+                required: true
+            },
+            appointment_date: {
+                required: true
+            },
+            status: {
+                required: true
+            }
+        },
+        messages: {
+            patient_name: {
+                required: "Patient name is required",
+                minlength: "Minimum 3 characters"
+            },
+            clinic_location: {
+                required: "Clinic location is required"
+            },
+            clinician_id: {
+                required: "Please select clinician"
+            },
+            appointment_date: {
+                required: "Appointment date is required"
+            },
+            status: {
+                required: "Please select status"
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'text-red-500 text-sm',
+        highlight: function(element) {
+            $(element).addClass('border-red-500');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('border-red-500');
+        }
+    });
+});
+</script>
