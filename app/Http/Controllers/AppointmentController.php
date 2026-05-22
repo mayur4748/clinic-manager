@@ -34,17 +34,18 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         Appointment::create([
-
             'patient_name' => $request->patient_name,
-
             'clinic_location' => $request->clinic_location,
-
             'clinician_id' => $request->clinician_id,
-
             'appointment_date' => $request->appointment_date,
-
             'status' => $request->status,
+        ]);
 
+         ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Create',
+            'module' => 'Appointment',
+            'description' => 'Created Appointment: ' . $request->patient_name
         ]);
 
         return redirect()
@@ -71,17 +72,18 @@ class AppointmentController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         $appointment->update([
-
             'patient_name' => $request->patient_name,
-
             'clinic_location' => $request->clinic_location,
-
             'clinician_id' => $request->clinician_id,
-
             'appointment_date' => $request->appointment_date,
-
             'status' => $request->status,
+        ]);
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Update',
+            'module' => 'Appointment',
+            'description' => 'Updated appointment: ' . $appointment->patient_name
         ]);
 
         return redirect()
@@ -94,6 +96,14 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Delete',
+            'module' => 'Appointment',
+            'description' => 'Deleted Appointment: ' . $appointment->patient_name
+        ]);
+
         $appointment->delete();
 
         return redirect()

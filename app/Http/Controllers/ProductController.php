@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-
+use App\Models\ActivityLog;
 class ProductController extends Controller
 {
     /**
@@ -40,6 +40,13 @@ class ProductController extends Controller
             'status' => $request->status,
         ]);
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Create',
+            'module' => 'Product',
+            'description' => 'Created product: ' . $request->product_name
+        ]);
+
         return redirect()->route('products.index')
             ->with('success', 'Product created successfully');
     }
@@ -66,6 +73,13 @@ class ProductController extends Controller
             'status' => $request->status,
         ]);
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Update',
+            'module' => 'Product',
+            'description' => 'Updated product: ' . $product->product_name
+        ]);
+
         return redirect()->route('products.index')
             ->with('success', 'Product updated successfully');
     }
@@ -75,8 +89,16 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Delete',
+            'module' => 'Product',
+            'description' => 'Deleted product: ' . $product->product_name
+        ]);
 
+        $product->delete();
+        
         return redirect()->route('products.index')
             ->with('success', 'Product deleted successfully');
     }
