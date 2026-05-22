@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Models\ActivityLog;
 class AppointmentController extends Controller
 {
     /**

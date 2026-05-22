@@ -16,25 +16,11 @@ class Appointment extends Model
         'clinician_id',
         'appointment_date',
         'status'
-
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
     public function clinician()
     {
         return $this->belongsTo(User::class, 'clinician_id');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Query Scope
-    |--------------------------------------------------------------------------
-    */
 
     public function scopeUpcoming($query)
     {
