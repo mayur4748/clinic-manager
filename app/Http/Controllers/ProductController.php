@@ -49,7 +49,7 @@ class ProductController extends Controller
                     return '
                         <div class="flex justify-center gap-2">
                             <a href="'.$edit.'"
-                            class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">
+                            class="bg-yellow-400 hover:bg-yellow-500  text-black px-3 py-1 rounded">
                                 Edit
                             </a>
                             <form action="'.$delete.'"
@@ -58,7 +58,7 @@ class ProductController extends Controller
                                 '.method_field("DELETE").'
                                 <button type="submit"
                                         onclick="return confirm(`Are you sure?`)"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                                        class="bg-red-500 hover:bg-red-600  text-black px-3 py-1 rounded">
                                     Delete
                                 </button>
                             </form>
